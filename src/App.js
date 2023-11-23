@@ -1,25 +1,48 @@
-import logo from './logo.svg';
 import './App.css';
+import React, {  useState } from 'react'
+import {
+  createBrowserRouter,
+  RouterProvider,
+} from "react-router-dom";
+import Home from './pages/Home';
+import Topic from './pages/Topic';
+import Header from './components/Header';
 
-function App() {
+const ThemeContext = React.createContext()
+
+export default function App() {
+  const[theme, setTheme] = useState(true)
+  const[topic, setTopic] = useState()
+  const data = require('./data.json');
+
+  const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <Home />,
+  },
+  {
+    path: "/topic/:id",
+    element: <Topic />,
+  },
+]);
+
+
+const settheme = () => {
+  setTheme(pre=>!pre)
+}
+
+  
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+     <ThemeContext.Provider value={{theme,settheme,data,setTopic}}>
+      <Header id={topic}/> 
+     <RouterProvider router={router} />
+     </ThemeContext.Provider>
+    </>
+      
   );
 }
 
-export default App;
+export {ThemeContext}
+
+
